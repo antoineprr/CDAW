@@ -17,11 +17,11 @@
 
         static function getUserById($pdo, $id)
         {
-            $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
-            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, get_called_class());
-            return $stmt->fetch();
+            $request = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+            $request->bindValue(':id', $id, PDO::PARAM_INT);
+            $request->execute();
+            $request->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, get_called_class());
+            return $request->fetch();
         }
 
         static function showAllUsersAsTable($pdo)
@@ -64,24 +64,24 @@
         }
 
         function deleteUser($pdo){
-            $stmt = $pdo->prepare("DELETE FROM users WHERE id = :id");
-            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-            $stmt->execute();
+            $request = $pdo->prepare("DELETE FROM users WHERE id = :id");
+            $request->bindValue(':id', $this->id, PDO::PARAM_INT);
+            $request->execute();
         }
 
         function createUser($pdo){
-            $stmt = $pdo->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
-            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
-            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
-            $stmt->execute();
+            $request = $pdo->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
+            $request->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $request->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $request->execute();
         }
 
         function updateUser($pdo){
-            $stmt = $pdo->prepare("UPDATE users SET name=:name, email=:email WHERE id=:id");
-            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
-            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
-            $stmt->execute();
+            $request = $pdo->prepare("UPDATE users SET name=:name, email=:email WHERE id=:id");
+            $request->bindValue(':id', $this->id, PDO::PARAM_INT);
+            $request->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $request->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $request->execute();
         }
     }
 ?>
