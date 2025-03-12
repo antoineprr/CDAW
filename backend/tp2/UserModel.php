@@ -105,4 +105,14 @@ class UserModel
             return false;
         }
     }
+
+    public function tryLogin(){
+        $pdo = DatabaseConnector::current();
+        $request = $pdo->prepare("SELECT * FROM users WHERE name = :name");
+        $request->bindValue(':name', $this->name, PDO::PARAM_STR);
+        $request->execute();
+        $request->setFetchMode(PDO::FETCH_CLASS, 'UserModel');
+        $result = $request->fetch();
+        return $result ? $result : null;
+    }
 }

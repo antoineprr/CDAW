@@ -1,6 +1,6 @@
 <?php
 require "bootstrap.php";
-
+require "controller/LoginController.php";
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
 header("Access-Control-Allow-Origin: *");
 
@@ -67,6 +67,9 @@ switch($controllerName) {
             echo json_encode(['message' => 'User ID is required']);
             exit();
         }
+        break;
+    case 'login' :
+        $controller = new LoginController($requestMethod);
         break;
     default :
         header("HTTP/1.1 404 Not Found");
