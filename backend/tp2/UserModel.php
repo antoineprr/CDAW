@@ -5,6 +5,7 @@ class UserModel
     protected $id;
     protected $name;
     protected $email;
+    protected $password;
 
     public function getId() {
         return $this->id;
@@ -18,6 +19,10 @@ class UserModel
         return $this->email;
     }
 
+    public function getPassword() {
+        return $this->password;
+    }
+
     public function setName($name) {
         $this->name = $name;
     }
@@ -26,6 +31,10 @@ class UserModel
         $this->email = $email;
     }
     
+    public function setPassword($password) {
+        $this->password = $password;
+    }
+
     public static function getAllUsers() {
         $pdo = DatabaseConnector::current();
         $request = $pdo->query("SELECT * FROM users");
@@ -56,9 +65,11 @@ class UserModel
     public function createUser(){
         try {
             $pdo = DatabaseConnector::current();
-            $request = $pdo->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
+            $request = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
             $request->bindValue(':name', $this->name, PDO::PARAM_STR);
             $request->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
+            $request->bindValue(':password', $password_hash, PDO::PARAM_STR);
             $result = $request->execute();
             
             if ($result) {

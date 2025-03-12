@@ -77,15 +77,15 @@ class UsersController {
         $user = new UserModel();
         
         $input = json_decode(file_get_contents('php://input'), true);
-        if (isset($input['name']) && isset($input['email'])) {
+        if (isset($input['name']) && isset($input['email']) && isset($input['password'])) {
             $user->setName($input['name']);
             $user->setEmail($input['email']);
+            $user->setPassword($input['password']); 
         }
        
-        
-        if (empty($user->getName())) {
+        if (empty($user->getName()) || empty($user->getPassword())) {
             $response['status_code_header'] = 'HTTP/1.1 400 Bad Request';
-            $response['body'] = json_encode(['message' => 'Missing required fields: name']);
+            $response['body'] = json_encode(['message' => 'Missing required fields: name or password']);
             return $response;
         }
 
